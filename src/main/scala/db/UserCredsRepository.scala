@@ -30,8 +30,8 @@ class UserCredsRepository(override val driver: JdbcProfile) extends Repository[U
   class Creds(tag: Tag) extends Table[UserCreds](tag, "UserCreds") with Keyed[Int] {
     override def id = column[Int]("ID", O.AutoInc, O.PrimaryKey)
     def name = column[String]("name", O.SqlType("VARCHAR(20)"))
-    def hashedPass = column[String]("passwordHash", O.SqlType("VARCHAR(100)"))
-    def token = column[String]("token", O.SqlType("VARCHAR(50)"))
+    def hashedPass = column[String]("passwordHash")
+    def token = column[String]("token")
 
     override def * = (id.?, name.?, hashedPass.?, token.?)<>((UserCreds.apply _).tupled, UserCreds.unapply)
   }

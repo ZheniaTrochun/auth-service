@@ -51,7 +51,7 @@ trait RouteUtils extends JsonProtocol {
 
   implicit class FutureBooleanJson(val value: Future[Boolean]) {
     def toOptionalJson: Future[Option[JsValue]] = {
-      value.map(res => if (res) Some("""{result:true}""".parseJson) else None)
+      value.map(res => if (res) Some("""{"result":"true"}""".parseJson) else None)
     }
   }
 

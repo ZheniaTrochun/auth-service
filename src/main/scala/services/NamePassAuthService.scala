@@ -50,7 +50,7 @@ class NamePassAuthServiceImpl
   override def register(name: String, password: String, email: String): Future[Boolean] = {
     val creds = UserCreds(name = Some(name), passwordHash = Some(password.bcrypt))
 
-    logger.debug("Start of register request processing...")
+    logger.debug(s"Start of register request processing... $creds")
 
     ipApiRequest(RequestBuilding.Post("/users/", UserDto(name, email))) flatMap { response =>
       response.status match {
