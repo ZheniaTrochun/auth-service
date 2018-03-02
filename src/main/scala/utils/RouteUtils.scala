@@ -1,17 +1,18 @@
 package utils
 
-import akka.http.javadsl.model.headers.RawHeader
 import akka.http.scaladsl.model.{headers, _}
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
+import models.json.JsonProtocol
 import spray.json.JsValue
 import spray.json._
+
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-trait RouteUtils {
+trait RouteUtils extends JsonProtocol {
   def completeWithFuture(f: => Future[Option[JsValue]]): Route = {
     onComplete(f) {
       case Success(res) =>

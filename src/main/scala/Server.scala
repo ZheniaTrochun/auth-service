@@ -1,12 +1,25 @@
+import akka.actor.ActorSystem
+import akka.event.{Logging, LoggingAdapter}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
+import akka.stream.ActorMaterializer
+import akka.util.Timeout
 import api.{AdminRoutes, AuthRoutes}
 import com.typesafe.config.ConfigFactory
 import services.{AdminServiceImpl, NamePassAuthServiceImpl}
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 
+import scala.concurrent.duration._
+import scala.concurrent.ExecutionContext
+
 object Server {
+  private implicit val system: ActorSystem = ActorSystem()
+  protected implicit val executor: ExecutionContext = system.dispatcher
+  protected val log: LoggingAdapter = Logging(system, getClass)
+  protected implicit val materializer: ActorMaterializer = ActorMaterializer()
+  private implicit val timeout: Timeout = 25 seconds
+
   val dbConfig: DatabaseConfig[JdbcProfile] = DatabaseConfig.forConfig("postgres")
   val config = ConfigFactory.load()
   val httpConfig = config.getConfig("http")

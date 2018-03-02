@@ -4,16 +4,17 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.client.RequestBuilding
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
 import akka.http.scaladsl.model.StatusCodes._
+import akka.stream.Materializer
 import akka.stream.scaladsl.{Flow, Sink, Source}
-import authentikat.jwt.JsonWebToken
 import db.UserCredsRepository
-import models.{UserCreds, UserDto, UserRegisterRequest, UserSignInRequest}
+import models.{UserCreds, UserDto}
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 import com.github.t3hnar.bcrypt._
 import com.typesafe.config.ConfigFactory
 import security.JwtUtils
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 trait NamePassAuthService {
@@ -22,7 +23,10 @@ trait NamePassAuthService {
   def login(name: String, password: String): Future[Option[String]]
 }
 
-class NamePassAuthServiceImpl(val dbConfig: DatabaseConfig[JdbcProfile]) extends NamePassAuthService with JwtUtils {
+class NamePassAuthServiceImpl
+  (val dbConfig: DatabaseConfig[JdbcProfile])
+  (implicit val mat: Materializer)
+    extends NamePassAuthService with JwtUtils {
 
   val config = ConfigFactory.load()
 
