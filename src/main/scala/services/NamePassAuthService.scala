@@ -1,9 +1,10 @@
 package services
 
 import akka.actor.ActorSystem
+import akka.http.javadsl.model.StatusCodes
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.client.RequestBuilding
-import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
+import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCode}
 import akka.http.scaladsl.model.StatusCodes._
 import akka.stream.Materializer
 import akka.stream.scaladsl.{Flow, Sink, Source}
@@ -16,6 +17,7 @@ import com.typesafe.config.ConfigFactory
 import security.JwtUtils
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import models.json.JsonProtocol
+import org.slf4j.LoggerFactory
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -33,8 +35,10 @@ class NamePassAuthServiceImpl
 
   val config = ConfigFactory.load()
 
-  private val db = dbConfig.db
-  private val driver = dbConfig.profile
+  val db = dbConfig.db
+  val driver = dbConfig.profile
+
+  val logger = LoggerFactory.getLogger(this.getClass)
 
   private val userCredsRepository = new UserCredsRepository(driver)
 
@@ -46,32 +50,49 @@ class NamePassAuthServiceImpl
   override def register(name: String, password: String, email: String): Future[Boolean] = {
     val creds = UserCreds(name = Some(name), passwordHash = Some(password.bcrypt))
 
+    logger.debug("Start of register request processing...")
+
     ipApiRequest(RequestBuilding.Post("/users/", UserDto(name, email))) flatMap { response =>
       response.status match {
         case OK =>
+          logger.debug("Data-service responded with status OK(200)")
+
           db.run(userCredsRepository.save(creds)) map { _: UserCreds =>
+            logger.debug("User credentials saving successful")
             true
           } recover {
-            case _ =>
+            case ex: Exception =>
+              logger.error("User credentials saving failed!", ex)
               false
           }
 
-        case _ =>
+        case code: StatusCode =>
+          logger.error(s"Data-service request failed with code $code MISSION ABORT!")
           Future.successful(false)
       }
     }
   }
 
   override def login(name: String, password: String): Future[Option[String]] = {
+    logger.debug("Start of login request processing...")
+
     db.run(userCredsRepository.findByName(name)) map {
       case Some(userCreds) =>
+        logger.debug("User fond successfully")
+
         if (password.isBcrypted(userCreds.passwordHash.get)) {
+
+          logger.debug("Password matched!")
           Some(createToken(name))
         } else {
+
+          logger.warn("Invalid password!")
           None
         }
 
       case _ =>
+
+        logger.error("Invalid response!")
         None
     }
   }
