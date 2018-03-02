@@ -7,7 +7,9 @@ import akka.http.scaladsl.server.Directives._
 import models.json.JsonProtocol
 import spray.json.JsValue
 import spray.json._
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
+import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success}

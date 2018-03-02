@@ -5,6 +5,7 @@ import utils.RouteUtils
 import akka.http.scaladsl.server.Directives._
 import models.{UserRegisterRequest, UserSignInRequest}
 import services.NamePassAuthService
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
 import scala.language.postfixOps
 

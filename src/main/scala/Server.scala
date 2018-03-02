@@ -14,11 +14,11 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
 
 object Server {
-  private implicit val system: ActorSystem = ActorSystem()
-  protected implicit val executor: ExecutionContext = system.dispatcher
-  protected val log: LoggingAdapter = Logging(system, getClass)
-  protected implicit val materializer: ActorMaterializer = ActorMaterializer()
-  private implicit val timeout: Timeout = 25 seconds
+  implicit val system: ActorSystem = ActorSystem()
+  implicit val executor: ExecutionContext = system.dispatcher
+  val log: LoggingAdapter = Logging(system, getClass)
+  implicit val materializer: ActorMaterializer = ActorMaterializer()
+  implicit val timeout: Timeout = 25 seconds
 
   val dbConfig: DatabaseConfig[JdbcProfile] = DatabaseConfig.forConfig("postgres")
   val config = ConfigFactory.load()

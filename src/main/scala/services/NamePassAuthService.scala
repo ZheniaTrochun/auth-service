@@ -1,5 +1,6 @@
 package services
 
+import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.client.RequestBuilding
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
@@ -25,7 +26,7 @@ trait NamePassAuthService {
 
 class NamePassAuthServiceImpl
   (val dbConfig: DatabaseConfig[JdbcProfile])
-  (implicit val mat: Materializer)
+  (implicit val mat: Materializer, implicit val system: ActorSystem)
     extends NamePassAuthService with JwtUtils {
 
   val config = ConfigFactory.load()
