@@ -4,8 +4,7 @@ import com.byteslounge.slickrepo.meta.Entity
 
 case class UserCreds(id: Option[Int] = None,
                      name: Option[String],
-                     passwordHash: Option[String],
-                     token: Option[String] = None)
+                     passwordHash: Option[String])
   extends Entity[UserCreds, Int] {
 
   override def withId(id: Int) = this.copy(id = Some(id))
