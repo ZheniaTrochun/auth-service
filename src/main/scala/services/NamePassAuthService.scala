@@ -14,6 +14,8 @@ import slick.jdbc.JdbcProfile
 import com.github.t3hnar.bcrypt._
 import com.typesafe.config.ConfigFactory
 import security.JwtUtils
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import models.json.JsonProtocol
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -27,7 +29,7 @@ trait NamePassAuthService {
 class NamePassAuthServiceImpl
   (val dbConfig: DatabaseConfig[JdbcProfile])
   (implicit val mat: Materializer, implicit val system: ActorSystem)
-    extends NamePassAuthService with JwtUtils {
+    extends NamePassAuthService with JwtUtils with JsonProtocol {
 
   val config = ConfigFactory.load()
 
