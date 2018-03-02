@@ -13,7 +13,7 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
 
-object Server {
+object Server extends App {
   implicit val system: ActorSystem = ActorSystem()
   implicit val executor: ExecutionContext = system.dispatcher
   val log: LoggingAdapter = Logging(system, getClass)
