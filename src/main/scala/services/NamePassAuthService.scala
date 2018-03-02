@@ -48,7 +48,7 @@ class NamePassAuthServiceImpl
   def ipApiRequest(request: HttpRequest): Future[HttpResponse] = Source.single(request).via(ipApiConnectionFlow).runWith(Sink.head)
 
   override def register(name: String, password: String, email: String): Future[Boolean] = {
-    val creds = UserCreds(name = Some(name), passwordHash = Some("123"))
+    val creds = UserCreds(name = Some(name), passwordHash = Some(password.bcrypt))
 
     logger.debug(s"Start of register request processing... $creds")
 
