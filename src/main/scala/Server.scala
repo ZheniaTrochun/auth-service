@@ -5,7 +5,6 @@ import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
 import api.{AdminRoutes, AuthRoutes}
-import com.typesafe.config.ConfigFactory
 import config.AppConfig
 import services.{AdminServiceImpl, NamePassAuthServiceImpl}
 import slick.basic.DatabaseConfig

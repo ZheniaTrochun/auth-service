@@ -1,4 +1,4 @@
 {
-  "name": "Akka HTTP microservice example",
-  "description": "Simple (micro)service which demonstrates how to accomplish tasks typical for REST service using Akka HTTP.",
+  "name": "Gateway microservice",
+  "description": "Simple gateway microservice which built with Akka HTTP."
 }
