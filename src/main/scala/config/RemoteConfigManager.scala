@@ -15,7 +15,11 @@ class RemoteConfigManager(val config: Config) {
   }
 
   def createDummyConfig(): Unit = {
-    val conf = Map("secret" -> "top-secret", "algo" -> "HS256")
+    val conf = Map(
+      "api.security.secret" -> "top-secret",
+      "api.security.algo" -> "HS256",
+      "services.data-service.host" -> "my-data-service.herokuapp.com")
+
     redisClient.hmset("auth-service-config", conf)
   }
 

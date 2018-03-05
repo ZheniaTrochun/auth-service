@@ -22,10 +22,10 @@ class AdminRoutes(val adminService: AdminService) extends AppConfig {
           config.createDummyConfig()
           complete("Ok")
         } ~
-          (path("update") & get) {
-            config.update()
-            complete("Ok")
-          }
+        (path("update") & get) {
+          config.update()
+          complete("Ok")
+        }
       }
     }
 }

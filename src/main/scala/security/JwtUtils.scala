@@ -1,11 +1,9 @@
 package security
 
 import authentikat.jwt.{JsonWebToken, JwtClaimsSet, JwtHeader}
-import com.typesafe.config.ConfigFactory
+import config.AppConfig
 
-trait JwtUtils {
-
-  private val config = ConfigFactory.load()
+trait JwtUtils extends AppConfig {
 
   private val algo = config.getString("api.security.algo")
   private val secret = config.getString("api.security.secret")

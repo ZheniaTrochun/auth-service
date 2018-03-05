@@ -1,7 +1,6 @@
 package services
 
 import akka.actor.ActorSystem
-import akka.http.javadsl.model.StatusCodes
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.client.RequestBuilding
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCode}
@@ -13,9 +12,9 @@ import models.{UserCreds, UserDto}
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 import com.github.t3hnar.bcrypt._
-import com.typesafe.config.ConfigFactory
 import security.JwtUtils
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import config.AppConfig
 import models.json.JsonProtocol
 import org.slf4j.LoggerFactory
 
@@ -31,9 +30,10 @@ trait NamePassAuthService {
 class NamePassAuthServiceImpl
   (val dbConfig: DatabaseConfig[JdbcProfile])
   (implicit val mat: Materializer, implicit val system: ActorSystem)
-    extends NamePassAuthService with JwtUtils with JsonProtocol {
-
-  val config = ConfigFactory.load()
+    extends NamePassAuthService
+      with JwtUtils
+      with JsonProtocol
+      with AppConfig {
 
   val db = dbConfig.db
   val driver = dbConfig.profile
@@ -91,7 +91,6 @@ class NamePassAuthServiceImpl
         }
 
       case _ =>
-
         logger.error("Invalid response!")
         None
     }
