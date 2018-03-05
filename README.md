@@ -1,4 +1,4 @@
-# Akka HTTP Gateway microservice
+# Akka HTTP authentication microservice
 
 ## Usage
 

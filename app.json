@@ -1,4 +1,4 @@
 {
-  "name": "Gateway microservice",
-  "description": "Simple gateway microservice which built with Akka HTTP."
+  "name": "Authentication microservice",
+  "description": "Simple authentication microservice which built with Akka HTTP."
 }
