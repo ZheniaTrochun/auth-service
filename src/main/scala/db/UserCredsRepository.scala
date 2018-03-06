@@ -27,6 +27,11 @@ class UserCredsRepository(override val driver: JdbcProfile) extends Repository[U
     tableQuery.filter(_.name === name).result.headOption
   }
 
+  def deleteByName(name: String): FixedSqlAction[Int, NoStream, Effect.Write] = {
+    tableQuery.filter(_.name === name).delete
+  }
+
+
   class Creds(tag: Tag) extends Table[UserCreds](tag, "UserCreds") with Keyed[Int] {
     override def id = column[Int]("ID", O.AutoInc, O.PrimaryKey)
     def name = column[String]("name", O.SqlType("VARCHAR(20)"))
