@@ -7,6 +7,8 @@ import slick.jdbc.JdbcProfile
 
 import scala.concurrent.Future
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 trait UserService {
   def delete(name: String): Future[Boolean]
 }
