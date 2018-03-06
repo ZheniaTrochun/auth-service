@@ -6,7 +6,7 @@ import akka.stream.ActorMaterializer
 import akka.util.Timeout
 import api.{AdminRoutes, AuthRoutes, HealthRoute}
 import config.AppConfig
-import services.{AdminServiceImpl, NamePassAuthServiceImpl}
+import services.{AdminServiceImpl, NamePassAuthServiceImpl, UserServiceImpl}
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 
@@ -25,8 +25,9 @@ object Server extends App with AppConfig with HealthRoute {
 
   val namePassAuthService = new NamePassAuthServiceImpl(dbConfig)
   val adminService = new AdminServiceImpl(dbConfig)
+  val userService = new UserServiceImpl(dbConfig)
 
-  val authRoutes = new AuthRoutes(namePassAuthService)
+  val authRoutes = new AuthRoutes(namePassAuthService, userService)
   val adminRoutes = new AdminRoutes(adminService)
 
   Http().bindAndHandle(
