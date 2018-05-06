@@ -20,7 +20,7 @@ trait RouteUtils extends JsonProtocol {
       case Success(res) =>
         res match {
           case Some(value) =>
-            complete(HttpResponse(StatusCodes.OK, entity = HttpEntity(ContentTypes.`application/json`, res.toString)))
+            complete(HttpResponse(StatusCodes.OK, entity = HttpEntity(ContentTypes.`application/json`, value.toString)))
 
           case None =>
             complete(HttpResponse(StatusCodes.BadRequest, entity = HttpEntity(ContentTypes.`application/json`, "")))
@@ -36,7 +36,7 @@ trait RouteUtils extends JsonProtocol {
       case Success(res) =>
         res match {
           case Some(value) =>
-            val rawResp = HttpResponse(StatusCodes.OK, entity = HttpEntity(ContentTypes.`application/json`, res.toString))
+            val rawResp = HttpResponse(StatusCodes.OK, entity = HttpEntity(ContentTypes.`application/json`, value))
             complete(rawResp.withHeaders(RawHeader(key, value)))
 
           case None =>
