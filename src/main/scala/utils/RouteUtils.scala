@@ -36,7 +36,8 @@ trait RouteUtils extends JsonProtocol {
       case Success(res) =>
         res match {
           case Some(value) =>
-            val rawResp = HttpResponse(StatusCodes.OK, entity = HttpEntity(ContentTypes.`application/json`, value))
+            val rawResp = HttpResponse(StatusCodes.OK,
+              entity = HttpEntity(ContentTypes.`application/json`, s"""{"token":"$value"}"""))
             complete(rawResp.withHeaders(RawHeader(key, value)))
 
           case None =>
